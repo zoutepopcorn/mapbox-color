@@ -1,0 +1,33 @@
+import {convertGpx} from "./modules/convert";
+import {setMaxSpeed, colorRoute, setColorGradient} from "./modules/color-route";
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoiem91dGVwb3Bjb3JuIiwiYSI6ImNqaDRxem9sNDE1Zmwyd2xuZG1iYTl0OXcifQ.r4qZMpEbr2FoCN4sd97kDw';
+
+const map = (window.map = new mapboxgl.Map({
+    container: 'map',
+    center: [13.88, 46.37],
+    style: 'mapbox://styles/mapbox/light-v10',
+    zoom: 12
+}));
+
+const plotRoute = async () => {
+    const hike = await convertGpx("routes/hike.gpx");
+    console.log("hike ", hike);
+
+    // You can set your colors
+    setColorGradient([
+        {color: 'purple', pos: 0},
+        {color: 'blue', pos: 0.2},
+        {color: 'green', pos: 0.25},
+        {color: 'yellow', pos: 0.3},
+        {color: 'orange', pos: 0.4},
+        {color: 'red', pos: 1},
+    ]);
+
+    setMaxSpeed(70);
+    colorRoute(hike);
+}
+
+map.on('load', async () => {
+    await plotRoute();
+});

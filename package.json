@@ -1,0 +1,19 @@
+{
+  "name": "mapbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "snowpack dev",
+    "build": "snowpack build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tmcw/togeojson": "^4.2.0",
+    "geolib": "^3.3.1",
+    "timediff": "^1.1.1",
+    "tinygradient": "^1.1.2"
+  }
+}

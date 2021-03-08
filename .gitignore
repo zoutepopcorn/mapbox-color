@@ -1,0 +1,7 @@
+node_modules
+#*.gpx
+*.kml
+dist
+*_bu
+.idea
+.cache
