@@ -1,0 +1,25 @@
+{
+  "name": "@mapbox-color/route",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zoutepopcorn/mapbox-color.git"
+  },
+  "keywords": [
+    "mapbox",
+    "color",
+    "route",
+    "gpx"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zoutepopcorn/mapbox-color/issues"
+  },
+  "homepage": "https://github.com/zoutepopcorn/mapbox-color#readme"
+}
