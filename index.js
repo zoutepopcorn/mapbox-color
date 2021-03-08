@@ -88,7 +88,7 @@ map.on('load', async () => {
                     }
                 }
             ]
-        }
+        }});
 
 
     // await plotRoute();
