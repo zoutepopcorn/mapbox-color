@@ -5,3 +5,4 @@ dist
 *_bu
 .idea
 .cache
+*.test.js
