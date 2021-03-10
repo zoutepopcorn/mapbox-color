@@ -45,6 +45,19 @@ const getSpeeds = (route, times) => {
     return SPEEDS;
 }
 
+const convertFromInput = (TEXT) => {
+    // const RES = await fetch(FILENAME);
+    const GPX_TXT = gpx(new DOMParser().parseFromString(TEXT, "text/xml"))
+    const ROUTE = {};
+    ROUTE.coords = GPX_TXT.features[0].geometry.coordinates;
+    ROUTE.times = GPX_TXT.features[0].properties.coordTimes;
+    ROUTE.speeds = getSpeeds(ROUTE.coords, ROUTE.times);
+    ROUTE.distances = getDistances(ROUTE.coords);
+    ROUTE.maxSpeed = 200;
+    return ROUTE;
+}
+
+
 const convertGpx = async (FILENAME) => {
     const RES = await fetch(FILENAME);
     const GPX_TXT = gpx(new DOMParser().parseFromString(await RES.text(), "text/xml"))
@@ -57,4 +70,4 @@ const convertGpx = async (FILENAME) => {
     return ROUTE;
 }
 
-export {convertGpx, getDistances}
+export {convertGpx, getDistances, convertFromInput}
