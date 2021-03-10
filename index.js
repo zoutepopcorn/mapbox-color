@@ -1,7 +1,7 @@
 import {convertGpx} from "./modules/convert";                               // or @mapbox-color/convert
 import {setMaxSpeed, colorRoute, setColorGradient} from "./modules/route";  // or @mapbox-color/route
 
-import {plotTest} from "./points.test"
+import {plotPoints, plotTest} from "./modules/points"
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoiem91dGVwb3Bjb3JuIiwiYSI6ImNqaDRxem9sNDE1Zmwyd2xuZG1iYTl0OXcifQ.r4qZMpEbr2FoCN4sd97kDw';
 

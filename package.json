@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@tmcw/togeojson": "^4.2.0",
+    "dayjs": "^1.10.4",
     "geolib": "^3.3.1",
     "timediff": "^1.1.1",
     "tinygradient": "^1.1.2"
