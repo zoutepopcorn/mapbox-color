@@ -1,5 +1,5 @@
 import {convertFromInput, convertGpx} from "./modules/convert";                               // or @mapbox-color/convert
-import {setMaxSpeed, colorRoute, setGradient} from "./modules/route";  // or @mapbox-color/route
+import {setMaxSpeed, colorRoute, setGradient, setGradientFromSpeed} from "./modules/route";  // or @mapbox-color/route
 
 import {plotPoints} from "./modules/points"
 
@@ -55,17 +55,27 @@ inputElement.addEventListener("change", handleFiles, false);
 
 const plotRoute = async () => {
     const hike = await convertGpx("routes/hike.gpx");
-    console.log("hike ", hike);
-
-    // You can set your colors
-    setGradient([
+    // Option is to set your colors
+    // setGradient([
+    //     {color: 'purple', pos: 0},
+    //     {color: 'blue', pos: 0.2},
+    //     {color: 'green', pos: 0.25},
+    //     {color: 'yellow', pos: 0.3},
+    //     {color: 'orange', pos: 0.4},
+    //     {color: 'red', pos: 1},
+    // ]);
+    // or from speed
+    setGradientFromSpeed([
         {color: 'purple', pos: 0},
-        {color: 'blue', pos: 0.2},
-        {color: 'green', pos: 0.25},
-        {color: 'yellow', pos: 0.3},
-        {color: 'orange', pos: 0.4},
-        {color: 'red', pos: 1},
-    ]);
+        {color: 'blue', pos: 10},
+        {color: 'green', pos: 15},
+        {color: 'yellow', pos: 25},
+        {color: 'orange', pos: 30},
+        {color: 'red', pos: 80}
+        ]);
+
+
+
 
     setMaxSpeed(70);
     colorRoute(hike);

@@ -1,4 +1,4 @@
-import {getColors, setGradient} from "./color";
+import {getColors, setGradient, setGradientFromSpeed} from "./color";
 
 let MAX_SPEED = 30;
 
@@ -65,4 +65,4 @@ const colorRoute = (route = {}) => {
     });
 }
 
-export {colorRoute, setMaxSpeed, setGradient};
+export {colorRoute, setMaxSpeed, setGradient, setGradientFromSpeed};
