@@ -5,24 +5,19 @@ let MAX_SPEED = 30;
 const setMaxSpeed = (SPEED) => {
     MAX_SPEED = SPEED;
 }
-const setColorGradient = (GRADIENT) => {
-    setGradient(GRADIENT);
-}
-const getStops = (DISTS, SPEEDS) => {
-    const STOPS = [];
+const getStops = (distances, speeds) => {
+    const stops = [];
     let routeLength = 0;
     let o = 0;
-    const MY_COLORS = getColors(MAX_SPEED + 1);
-
-    for (const LENGTH of DISTS.route) {
-        const SPEED = SPEEDS[o++];
+    const myColor = getColors(MAX_SPEED + 1);
+    for (const LENGTH of distances.route) {
+        const SPEED = speeds[o++];
         const ARR_NR = SPEED >= MAX_SPEED ? MAX_SPEED : SPEED;
-        const COLOR = MY_COLORS[ARR_NR];
         routeLength += LENGTH;
-        const STOP = (routeLength / DISTS.totalLength);
-        STOPS.push(STOP, COLOR);
+        const STOP = (routeLength / distances.totalLength);
+        stops.push(STOP, myColor[ARR_NR]);
     }
-    return STOPS;
+    return stops;
 }
 
 const colorRoute = (route = {}) => {
@@ -70,4 +65,4 @@ const colorRoute = (route = {}) => {
     });
 }
 
-export {colorRoute, setMaxSpeed, setColorGradient};
+export {colorRoute, setMaxSpeed, setGradient};
