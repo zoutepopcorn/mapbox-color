@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "snowpack dev",
-    "build": "esbuild index.js --bundle --outfile=./gh-pages/index.js"
+    "build": "esbuild index.js --bundle --outfile=./docs/index.js"
   },
   "author": "",
   "license": "ISC",

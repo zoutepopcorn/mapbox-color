@@ -3,10 +3,10 @@
 This is a PoC for displaying the speed of a route on a map. 
 It wil use a line-gradient property. I was inspired by this example.
 https://docs.mapbox.com/mapbox-gl-js/example/line-gradient/
-![](docs/color_map.png)
+![](imgs/color_map.png)
 
 For example this is a hike:
-![](docs/hike.png)
+![](imgs/hike.png)
 
 ### Todo
 * a lot
