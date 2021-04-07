@@ -1,5 +1,5 @@
 import {convertFromInput, convertGpx} from "./modules/convert";                               // or @mapbox-color/convert
-import {setMaxSpeed, colorRoute, setGradient, setGradientFromSpeed} from "./modules/route";  // or @mapbox-color/route
+import {setMaxSpeed, colorRoute, setGradient, setGradientFromSpeed, addToMap} from "./modules/route";  // or @mapbox-color/route
 import {plotPoints} from "./modules/points"
 // import {plotArrows} from "./modules/arrows"
 
@@ -19,7 +19,7 @@ const handleFiles = async (files) => {
     console.log("files ", files);
     const file = document.getElementById('addGpx').files[0];
     if (file) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
             console.log(evt.target.result);
@@ -35,8 +35,15 @@ const handleFiles = async (files) => {
                 {color: 'red', pos: 1},
             ]);
             setMaxSpeed(70);
-            colorRoute(hike);
-            // plotPoints(hike);
+
+            const output = colorRoute(hike);
+            addToMap(map, output);
+            plotPoints(map, hike);
+            zoomTo(output.geojson);
+
+
+            console.log(hike);
+
         }
         reader.onerror = function (evt) {
             document.getElementById("fileContents").innerHTML = "error reading file";
@@ -47,7 +54,6 @@ const handleFiles = async (files) => {
 
 const inputElement = document.getElementById("addGpx");
 inputElement.addEventListener("change", handleFiles, false);
-
 
 
 const plotRoute = async () => {
@@ -69,15 +75,28 @@ const plotRoute = async () => {
         {color: 'yellow', pos: 25},
         {color: 'orange', pos: 30},
         {color: 'red', pos: 80}
-        ]);
+    ]);
 
     setMaxSpeed(70);
+    hike.name = "my-route";
+    const output = colorRoute(hike);
+    addToMap(map, output);
+    plotPoints(map, hike);
+    // console.log(output.geojson)
+    zoomTo(output.geojson);
+}
 
+const zoomTo = (geojson) => {
+    console.log(geojson);
+    const coordinates = geojson.features[0].geometry.coordinates;
+    const bounds = coordinates.reduce((bounds, coord) => {
+        return bounds.extend(coord);
+    }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
+    map.fitBounds(bounds, {
+        padding: 20
+    });
 
-    colorRoute(hike);
-
-    // plotPoints(hike);
 }
 
 map.on('load', async () => {

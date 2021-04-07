@@ -13,7 +13,7 @@ const getFeature = (lnglat, time) => {
     return feature;
 }
 
-const plotPoints = (route, timeFormat = "HH:mm.ss") => {
+const plotPoints = (map, route, timeFormat = "HH:mm.ss") => {
     TIME_FORMAT = timeFormat;
 
     let FEATS = [];
@@ -22,7 +22,7 @@ const plotPoints = (route, timeFormat = "HH:mm.ss") => {
         FEATS.push(getFeature(COORD, route.times[i++]));
     }
 
-    map.addSource('points', {
+    map.addSource(`${route.name}-points`, {
         'type': 'geojson',
         'data': {
             'type': 'FeatureCollection',
@@ -33,7 +33,7 @@ const plotPoints = (route, timeFormat = "HH:mm.ss") => {
     map.addLayer({
         'id': 'points',
         'type': 'circle',
-        'source': 'points',
+        'source': `${route.name}-points`,
         'paint': {
             'circle-radius': 3,
             'circle-color': '#fff'
@@ -45,14 +45,14 @@ const plotPoints = (route, timeFormat = "HH:mm.ss") => {
     map.addLayer({
         'id': 'points-text',
         'type': 'symbol',
-        'source': 'points',
+        'source': `${route.name}-points`,
         'layout': {
             'text-field': ['get', 'time'],
             'text-font': [
                 'Open Sans Semibold',
                 'Arial Unicode MS Bold'
             ],
-            "text-padding": 36,
+            "text-padding": 50,
             "text-size": 10,
             'text-offset': [1, 0],
             'text-anchor': 'left'

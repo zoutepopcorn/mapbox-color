@@ -19,10 +19,27 @@ const getStops = (distances, speeds) => {
     }
     return stops;
 }
+const addToMap = (map, output) => {
+    map.addSource(`${output.name}`, {
+        type: 'geojson',
+        data: output.geojson,
+        lineMetrics: true
+    });
+    map.addLayer(output.layer);
+    const URL = '/arrow_white.png';
+    map.loadImage(URL,  (err, image) => {
+        if (err) {
+            console.error('err image', err);
+            return;
+        }
+        map.addImage('arrow', image);
+        map.addLayer(output.arrowLayer);
+    });
+}
 
 const colorRoute = (route = {}) => {
     const STOPS = getStops(route.distances, route.speeds);
-    const output = {};
+    const output = {name: route.name};
 
     output.geojson = {
         'type': 'FeatureCollection',
@@ -38,7 +55,6 @@ const colorRoute = (route = {}) => {
         ]
     };
 
-
     const GRADIENT = [
         'interpolate',
         ['linear'],
@@ -47,7 +63,7 @@ const colorRoute = (route = {}) => {
 
     output.layer = {
         type: 'line',
-        source: 'color-route',
+        source: `${route.name}`,
         id: 'line',
         paint: {
             'line-color': 'red',
@@ -59,37 +75,23 @@ const colorRoute = (route = {}) => {
             'line-join': 'round'
         }
     }
-
-
-    map.addSource('color-route', {
-        type: 'geojson',
-        data: output.geojson,
-        lineMetrics: true
-    });
-    map.addLayer(output.layer);
-
-
-    const URL = '/arrow_white.png';
-    map.loadImage(URL,  (err, image) => {
-        if (err) {
-            console.error('err image', err);
-            return;
+    output.arrowLayer = {
+        'id': 'arrow-layer',
+        'type': 'symbol',
+        'source': `${route.name}`,
+        'layout': {
+            'symbol-placement': 'line',
+            'symbol-spacing': 1,
+            'icon-allow-overlap': true,
+            'icon-image': 'arrow',
+            'icon-size': 0.04,
+            'visibility': 'visible'
         }
-        map.addImage('arrow', image);
-        map.addLayer({
-            'id': 'arrow-layer',
-            'type': 'symbol',
-            'source': "color-route",
-            'layout': {
-                'symbol-placement': 'line',
-                'symbol-spacing': 1,
-                'icon-allow-overlap': true,
-                'icon-image': 'arrow',
-                'icon-size': 0.04,
-                'visibility': 'visible'
-            }
-        });
-    });
+    }
+
+    return output;
+
+
 
     // map.addLayer({
     //     'id': 'symbols',
@@ -111,4 +113,4 @@ const colorRoute = (route = {}) => {
     // });
 }
 
-export {colorRoute, setMaxSpeed, setGradient, setGradientFromSpeed};
+export {colorRoute, setMaxSpeed, setGradient, setGradientFromSpeed, addToMap};
