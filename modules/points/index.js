@@ -3,21 +3,18 @@ import dayjs from 'dayjs'
 let TIME_FORMAT;
 
 const getFeature = (lnglat, time) => {
-    return {
-        'type': 'Feature', 'geometry':
-            {'type': 'Point', 'coordinates': lnglat},
-        'properties': {'time': dayjs(time).format(TIME_FORMAT)}
+    const feature = {
+        'type': 'Feature',
+        'geometry': {'type': 'Point', 'coordinates': lnglat},
+        'properties': {
+            'time': dayjs(time).format(TIME_FORMAT)
+        }
     }
+    return feature;
 }
 
-const DUMMY = [
-    getFeature([-77.03238901390978, 38.913188059745586]),
-    getFeature([-122.414, 37.776])
-];
-
-
 const plotPoints = (route, timeFormat = "HH:mm.ss") => {
-    TIME_FORMAT= timeFormat;
+    TIME_FORMAT = timeFormat;
 
     let FEATS = [];
     let i = 0;
@@ -41,7 +38,7 @@ const plotPoints = (route, timeFormat = "HH:mm.ss") => {
             'circle-radius': 3,
             'circle-color': '#fff'
         },
-        'minzoom' : 16,
+        'minzoom': 16,
         'filter': ['==', '$type', 'Point']
     });
 

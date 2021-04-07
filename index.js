@@ -1,7 +1,7 @@
 import {convertFromInput, convertGpx} from "./modules/convert";                               // or @mapbox-color/convert
 import {setMaxSpeed, colorRoute, setGradient, setGradientFromSpeed} from "./modules/route";  // or @mapbox-color/route
-
 import {plotPoints} from "./modules/points"
+// import {plotArrows} from "./modules/arrows"
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoiem91dGVwb3Bjb3JuIiwiYSI6ImNqaDRxem9sNDE1Zmwyd2xuZG1iYTl0OXcifQ.r4qZMpEbr2FoCN4sd97kDw';
 
@@ -34,12 +34,9 @@ const handleFiles = async (files) => {
                 {color: 'orange', pos: 0.4},
                 {color: 'red', pos: 1},
             ]);
-
             setMaxSpeed(70);
             colorRoute(hike);
             plotPoints(hike);
-
-
         }
         reader.onerror = function (evt) {
             document.getElementById("fileContents").innerHTML = "error reading file";
@@ -74,13 +71,9 @@ const plotRoute = async () => {
         {color: 'red', pos: 80}
         ]);
 
-
-
-
     setMaxSpeed(70);
     colorRoute(hike);
     plotPoints(hike);
-
 }
 
 map.on('load', async () => {

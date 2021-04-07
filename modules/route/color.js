@@ -27,10 +27,8 @@ const setGradientFromSpeed = (GRADIENT) => {
     const MAX = [...GRADIENT].pop().pos;
     const newGradient = [];
     for(const ITEM of GRADIENT) {
-        console.log(ITEM);
         const pos = ITEM.pos > 0 ? ITEM.pos / MAX : 0;
         const color = ITEM.color;
-        console.log(pos);
         newGradient.push({color, pos})
     }
     gradient = tinygradient(newGradient);

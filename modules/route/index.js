@@ -30,8 +30,8 @@ const colorRoute = (route = {}) => {
                 'type': 'Feature',
                 'properties': {},
                 'geometry': {
-                    'coordinates': route.coords,
-                    'type': 'LineString'
+                    'type': 'LineString',
+                    'coordinates': route.coords
                 }
             }
         ]
@@ -39,9 +39,10 @@ const colorRoute = (route = {}) => {
 
     map.addSource('color-route', {
         type: 'geojson',
-        lineMetrics: true,
-        data: geojson
+        data: geojson,
+        lineMetrics: true
     });
+    //
 
     const GRADIENT = [
         'interpolate',
@@ -60,9 +61,29 @@ const colorRoute = (route = {}) => {
         },
         layout: {
             'line-cap': 'round',
-            'line-join': 'round',
+            'line-join': 'round'
         }
     });
+
+    map.addLayer({
+        'id': 'symbols',
+        'type': 'symbol',
+        'source': 'color-route',
+        'layout': {
+            "symbol-placement": 'line',
+            "icon-allow-overlap": true,
+            "symbol-spacing": 2,
+            "text-field": '>',
+            "text-size": 17
+        },
+        "paint": {
+            "text-color": '#fff',
+            "text-halo-blur": 4,
+
+        }
+    });
+
+
 }
 
 export {colorRoute, setMaxSpeed, setGradient, setGradientFromSpeed};
