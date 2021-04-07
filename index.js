@@ -36,7 +36,7 @@ const handleFiles = async (files) => {
             ]);
             setMaxSpeed(70);
             colorRoute(hike);
-            plotPoints(hike);
+            // plotPoints(hike);
         }
         reader.onerror = function (evt) {
             document.getElementById("fileContents").innerHTML = "error reading file";
@@ -72,8 +72,12 @@ const plotRoute = async () => {
         ]);
 
     setMaxSpeed(70);
+
+
+
     colorRoute(hike);
-    plotPoints(hike);
+
+    // plotPoints(hike);
 }
 
 map.on('load', async () => {

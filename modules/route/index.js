@@ -21,9 +21,10 @@ const getStops = (distances, speeds) => {
 }
 
 const colorRoute = (route = {}) => {
-    console.log(route);
     const STOPS = getStops(route.distances, route.speeds);
-    const geojson = {
+    const output = {};
+
+    output.geojson = {
         'type': 'FeatureCollection',
         'features': [
             {
@@ -37,12 +38,6 @@ const colorRoute = (route = {}) => {
         ]
     };
 
-    map.addSource('color-route', {
-        type: 'geojson',
-        data: geojson,
-        lineMetrics: true
-    });
-    //
 
     const GRADIENT = [
         'interpolate',
@@ -50,7 +45,7 @@ const colorRoute = (route = {}) => {
         ['line-progress'],
         ...STOPS];
 
-    map.addLayer({
+    output.layer = {
         type: 'line',
         source: 'color-route',
         id: 'line',
@@ -63,27 +58,57 @@ const colorRoute = (route = {}) => {
             'line-cap': 'round',
             'line-join': 'round'
         }
+    }
+
+
+    map.addSource('color-route', {
+        type: 'geojson',
+        data: output.geojson,
+        lineMetrics: true
     });
+    map.addLayer(output.layer);
 
-    map.addLayer({
-        'id': 'symbols',
-        'type': 'symbol',
-        'source': 'color-route',
-        'layout': {
-            "symbol-placement": 'line',
-            "icon-allow-overlap": true,
-            "symbol-spacing": 2,
-            "text-field": '>',
-            "text-size": 17
-        },
-        "paint": {
-            "text-color": '#fff',
-            "text-halo-blur": 4,
 
+    const URL = '/arrow_white.png';
+    map.loadImage(URL,  (err, image) => {
+        if (err) {
+            console.error('err image', err);
+            return;
         }
+        map.addImage('arrow', image);
+        map.addLayer({
+            'id': 'arrow-layer',
+            'type': 'symbol',
+            'source': "color-route",
+            'layout': {
+                'symbol-placement': 'line',
+                'symbol-spacing': 1,
+                'icon-allow-overlap': true,
+                'icon-image': 'arrow',
+                'icon-size': 0.04,
+                'visibility': 'visible'
+            }
+        });
     });
 
-
+    // map.addLayer({
+    //     'id': 'symbols',
+    //     'type': 'symbol',
+    //     'source': 'color-route',
+    //     'layout': {
+    //         "symbol-placement": 'line',
+    //         "icon-allow-overlap": true,
+    //         "icon-anchor": "center",
+    //         "symbol-spacing": 2,
+    //         "text-field": '>',
+    //         "text-size": 17
+    //     },
+    //     "paint": {
+    //         "text-color": '#fff',
+    //         "text-halo-blur": 4,
+    //
+    //     }
+    // });
 }
 
 export {colorRoute, setMaxSpeed, setGradient, setGradientFromSpeed};
