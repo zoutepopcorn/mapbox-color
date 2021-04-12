@@ -7,6 +7,9 @@ https://docs.mapbox.com/mapbox-gl-js/example/line-gradient/
 For example this is a hike:
 ![](imgs/route.png)
 
+### Example
+https://zoutepopcorn.github.io/mapbox-color/
+
 ### Todo
 * a lot
 
