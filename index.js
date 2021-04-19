@@ -1,6 +1,7 @@
 import {convertFromInput, convertGpx} from "./modules/convert";                               // or @mapbox-color/convert
 import {setMaxSpeed, colorRoute, setGradient, setGradientFromSpeed, addToMap} from "./modules/route";  // or @mapbox-color/route
 import {plotPoints} from "./modules/points"
+import {plotArrows} from "./modules/arrows"
 // import {plotArrows} from "./modules/arrows"
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoiem91dGVwb3Bjb3JuIiwiYSI6ImNqaDRxem9sNDE1Zmwyd2xuZG1iYTl0OXcifQ.r4qZMpEbr2FoCN4sd97kDw';
@@ -40,8 +41,6 @@ const handleFiles = async (files) => {
             addToMap(map, output);
             plotPoints(map, hike);
             zoomTo(output.geojson);
-
-
             console.log(hike);
 
         }
@@ -81,7 +80,9 @@ const plotRoute = async () => {
     hike.name = "my-route";
     const output = colorRoute(hike);
     addToMap(map, output);
-    plotPoints(map, hike);
+    plotArrows(map, hike);
+    // plotPoints(map, hike);
+
     // console.log(output.geojson)
     zoomTo(output.geojson);
 }

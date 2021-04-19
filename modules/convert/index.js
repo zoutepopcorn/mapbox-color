@@ -54,6 +54,8 @@ const convertFromInput = (TEXT) => {
     ROUTE.speeds = getSpeeds(ROUTE.coords, ROUTE.times);
     ROUTE.distances = getDistances(ROUTE.coords);
     ROUTE.maxSpeed = 200;
+    ROUTE.rotation = Math.floor(360 * Math.random());
+    console.log(ROUTE);
     return ROUTE;
 }
 
@@ -67,6 +69,13 @@ const convertGpx = async (FILENAME) => {
     ROUTE.speeds = getSpeeds(ROUTE.coords, ROUTE.times);
     ROUTE.distances = getDistances(ROUTE.coords);
     ROUTE.maxSpeed = 200;
+
+    ROUTE.rotation = [];
+    for (const SPEED of ROUTE.speeds) {
+        ROUTE.rotation.push(Math.floor(360 * Math.random()));
+    }
+    console.log("ROUTE ", ROUTE);
+
     return ROUTE;
 }
 
