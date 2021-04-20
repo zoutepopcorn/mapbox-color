@@ -25,7 +25,7 @@ const getFeatureTime = (lngLat, time) => {
         'geometry': {'type': 'Point', 'coordinates': lngLat},
         'properties': {
             'text': dayjs(time).format(TIME_FORMAT),
-            'size': 12,
+            'size': 11,
             'rotation': 0
         }
     }
