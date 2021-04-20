@@ -1,11 +1,10 @@
 import dayjs from 'dayjs'
-import * as turf from '@turf/turf'
+// import * as turf from '@turf/turf'
 
 let TIME_FORMAT;
 
 const getFeature = (lngLat, lngLat2, time) => {
     // const bearing = turf.bearing(turf.point(lngLat), turf.point(lngLat2));
-
     const angleDeg = Math.atan2(lngLat2[0] - lngLat[0], lngLat2[1] - lngLat[1]) * 180 / Math.PI;
     // console.log(bearing, angleDeg);
 

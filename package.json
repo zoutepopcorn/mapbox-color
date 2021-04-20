@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@tmcw/togeojson": "^4.2.0",
-    "@turf/turf": "^6.3.0",
     "dayjs": "^1.10.4",
     "esbuild": "^0.11.2",
     "geolib": "^3.3.1",
