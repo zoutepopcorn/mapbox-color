@@ -13,7 +13,7 @@ const getFeature = (lngLat, lngLat2, time) => {
         'geometry': {'type': 'Point', 'coordinates': lngLat2},
         'properties': {
             'text': '>',
-            'size': 20,
+            'size': 15,
             'rotation': angleDeg + 90
         }
     }
