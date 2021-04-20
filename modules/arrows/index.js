@@ -4,18 +4,36 @@ import * as turf from '@turf/turf'
 let TIME_FORMAT;
 
 const getFeature = (lngLat, lngLat2, time) => {
-    const bearing = turf.bearing(turf.point(lngLat), turf.point(lngLat2));
-    console.log("bearing", bearing)
+    // const bearing = turf.bearing(turf.point(lngLat), turf.point(lngLat2));
+
+    const angleDeg = Math.atan2(lngLat2[0] - lngLat[0], lngLat2[1] - lngLat[1]) * 180 / Math.PI;
+    // console.log(bearing, angleDeg);
+
     const feature = {
         'type': 'Feature',
         'geometry': {'type': 'Point', 'coordinates': lngLat2},
         'properties': {
-            'time': dayjs(time).format(TIME_FORMAT),
-            'rotation': bearing + 90
+            'text': '>',
+            'size': 20,
+            'rotation': angleDeg + 90
         }
     }
     return feature;
 }
+const getFeatureTime = (lngLat, time) => {
+    const feature = {
+        'type': 'Feature',
+        'geometry': {'type': 'Point', 'coordinates': lngLat},
+        'properties': {
+            'text': dayjs(time).format(TIME_FORMAT),
+            'size': 12,
+            'rotation': 0
+        }
+    }
+    return feature;
+}
+
+
 
 const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
     TIME_FORMAT = timeFormat;
@@ -27,7 +45,12 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
     for (const COORD of route.coords) {
         const NOT_SAME_POINT = !(tmpCoord[0] === COORD[0] && tmpCoord[1] === COORD[1]);
         if (tmpCoord && NOT_SAME_POINT) {
-            FEATS.push(getFeature(COORD, tmpCoord, route.times[i++]));
+            i++;
+            if( i % 6 === 0) {
+                FEATS.push(getFeatureTime(COORD, route.times[i]));
+            } else {
+                FEATS.push(getFeature(COORD, tmpCoord, route.times[i]));
+            }
         }
         tmpCoord = [...COORD];
     }
@@ -40,34 +63,23 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
         }
     });
 
-    // map.addLayer({
-    //     'id': 'points',
-    //     'type': 'circle',
-    //     'source': `${route.name}-points`,
-    //     'paint': {
-    //         'circle-radius': 3,
-    //         'circle-color': '#fff'
-    //     },
-    //     'minzoom': 16,
-    //     'filter': ['==', '$type', 'Point']
-    // });
-    // ['get', 'time']
     map.addLayer({
         'id': 'points-arrows',
         'type': 'symbol',
         'source': `${route.name}-points-arrows`,
         'layout': {
-            'text-field': '>',
+            'text-field': ['get','text'],
             'text-font': [
                 'Open Sans Semibold',
                 'Arial Unicode MS Bold'
             ],
-            "text-padding": 50,
-            "text-size": 17,
+            "text-padding": 0,
+            "text-size": ['get', 'size'],
             'text-offset': [0, 0],
             'text-anchor': 'left',
             'text-rotate': ['get', 'rotation'],
-            'text-keep-upright': false
+            'text-keep-upright': false,
+            'icon-allow-overlap': true
         },
         'paint': {
             "text-color": "#fff",
@@ -75,6 +87,33 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
             "text-halo-width": 2
         }
     });
+
+
+    // map.addLayer({
+    //     'id': 'points-time',
+    //     'type': 'symbol',
+    //     'source': `${route.name}-points-arrows`,
+    //     'layout': {
+    //         'text-field': ['get', 'time'],
+    //         'text-font': [
+    //             'Open Sans Semibold',
+    //             'Arial Unicode MS Bold'
+    //         ],
+    //         "text-padding": 10,
+    //         "text-size": 17,
+    //         'text-offset': [0, 0],
+    //         'text-anchor': 'left',
+    //         'text-keep-upright': false,
+    //         'icon-allow-overlap': true
+    //     },
+    //     'paint': {
+    //         "text-color": "#fff",
+    //         "text-halo-color": "#000",
+    //         "text-halo-width": 2
+    //     }
+    // });
+
+
 }
 
 export {plotArrows}

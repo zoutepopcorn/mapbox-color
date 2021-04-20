@@ -36,7 +36,6 @@ const handleFiles = async (files) => {
                 {color: 'red', pos: 1},
             ]);
             setMaxSpeed(70);
-
             const output = colorRoute(hike);
             addToMap(map, output);
             plotPoints(map, hike);

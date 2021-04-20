@@ -6,3 +6,4 @@ dist
 .idea
 .cache
 *.test.js
+build
