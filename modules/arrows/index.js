@@ -32,8 +32,6 @@ const getFeatureTime = (lngLat, time) => {
     return feature;
 }
 
-
-
 const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
     TIME_FORMAT = timeFormat;
 
@@ -45,10 +43,12 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
         const NOT_SAME_POINT = !(tmpCoord[0] === COORD[0] && tmpCoord[1] === COORD[1]);
         if (tmpCoord && NOT_SAME_POINT) {
             i++;
-            if( i % 6 === 0) {
+            if( i % 20 === 0) {
                 FEATS.push(getFeatureTime(COORD, route.times[i]));
             } else {
-                FEATS.push(getFeature(COORD, tmpCoord, route.times[i]));
+                if( i % 4 == 0) {
+                    FEATS.push(getFeature(COORD, tmpCoord, route.times[i]));
+                }
             }
         }
         tmpCoord = [...COORD];
@@ -86,8 +86,6 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
             "text-halo-width": 2
         }
     });
-
-
     // map.addLayer({
     //     'id': 'points-time',
     //     'type': 'symbol',
@@ -111,8 +109,6 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
     //         "text-halo-width": 2
     //     }
     // });
-
-
 }
 
 export {plotArrows}

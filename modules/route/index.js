@@ -1,4 +1,5 @@
 import {getColors, setGradient, setGradientFromSpeed} from "./color";
+
 let MAX_SPEED = 30;
 
 const setMaxSpeed = (SPEED) => {
@@ -25,16 +26,16 @@ const addToMap = (map, output) => {
         lineMetrics: true
     });
     map.addLayer(output.layer);
-    const URL = '/arrow_white.png';
-    map.loadImage(URL,  (err, image) => {
-        if (err) {
-            console.error('err image', err);
-            return;
-        }
-        // map.addImage('arrow', image);
-        // map.addLayer(output.arrowLayer);
-    });
 
+    // const URL = '/arrow_white.png';
+    // map.loadImage(URL,  (err, image) => {
+    //     if (err) {
+    //         console.error('err image', err);
+    //         return;
+    //     }
+    // map.addImage('arrow', image);
+    // map.addLayer(output.arrowLayer);
+    // });
     // map.addLayer({
     //     "id": "symbols",
     //     "type": "symbol",
@@ -113,11 +114,7 @@ const colorRoute = (route = {}) => {
             'visibility': 'visible'
         }
     }
-
     return output;
-
-
-
     // map.addLayer({
     //     'id': 'symbols',
     //     'type': 'symbol',
