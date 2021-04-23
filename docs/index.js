@@ -2969,7 +2969,7 @@
     });
   });
 
-  // node_modules/dayjs/dayjs.min.js
+  // modules/node_modules/dayjs/dayjs.min.js
   var require_dayjs_min = __commonJS((exports, module) => {
     !function(t, e) {
       typeof exports == "object" && typeof module != "undefined" ? module.exports = e() : typeof define == "function" && define.amd ? define(e) : t.dayjs = e();
@@ -3566,7 +3566,26 @@
       padding: 20
     });
   };
+  var makeColorGuide = () => {
+    const grads = document.getElementById("gradients");
+    const COLORS = [
+      {color: "purple", pos: 0},
+      {color: "blue", pos: 10},
+      {color: "green", pos: 15},
+      {color: "yellow", pos: 25},
+      {color: "orange", pos: 30},
+      {color: "red", pos: 70}
+    ];
+    for (let i = 1; i < COLORS.length; i++) {
+      grads.innerHTML += `
+        <div id="id4" class="tableDiv"
+        style="background-image: linear-gradient(to right, ${COLORS[i - 1].color}, ${COLORS[i].color});">
+            <div>${COLORS[i].pos}</div>
+        </div>`;
+    }
+  };
   map.on("load", async () => {
     await plotRoute();
   });
+  makeColorGuide();
 })();
