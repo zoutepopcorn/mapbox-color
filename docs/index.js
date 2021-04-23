@@ -3241,7 +3241,6 @@
     for (const SPEED of ROUTE.speeds) {
       ROUTE.rotation.push(Math.floor(360 * Math.random()));
     }
-    console.log("ROUTE ", ROUTE);
     return ROUTE;
   };
 
@@ -3267,9 +3266,6 @@
     }
     return COLORS;
   };
-  var setGradient = (GRADIENT) => {
-    gradient = (0, import_tinygradient.default)(GRADIENT);
-  };
   var setGradientFromSpeed = (GRADIENT) => {
     const MAX = [...GRADIENT].pop().pos;
     const newGradient = [];
@@ -3285,6 +3281,10 @@
   var MAX_SPEED = 30;
   var setMaxSpeed = (SPEED) => {
     MAX_SPEED = SPEED;
+  };
+  var removeRoute = (map2, name) => {
+    map2.removeLayer(`${name}`);
+    map2.removeSource(`${name}`);
   };
   var getStops = (distances, speeds) => {
     const stops = [];
@@ -3306,6 +3306,7 @@
       data: output.geojson,
       lineMetrics: true
     });
+    output.layer.id = output.name;
     map2.addLayer(output.layer);
   };
   var colorRoute = (route = {}) => {
@@ -3344,82 +3345,17 @@
         "line-join": "round"
       }
     };
-    output.arrowLayer = {
-      id: "arrow2-layer",
-      type: "symbol",
-      source: `${route.name}`,
-      layout: {
-        "symbol-placement": "line",
-        "symbol-spacing": 1,
-        "icon-allow-overlap": true,
-        "icon-image": "arrow",
-        "icon-size": 0.04,
-        visibility: "visible"
-      }
-    };
     return output;
   };
 
-  // modules/points/index.js
+  // modules/arrows/index.js
   var import_dayjs = __toModule(require_dayjs_min());
   var TIME_FORMAT;
-  var getFeature = (lnglat, time) => {
-    const feature = {
-      type: "Feature",
-      geometry: {type: "Point", coordinates: lnglat},
-      properties: {
-        time: (0, import_dayjs.default)(time).format(TIME_FORMAT)
-      }
-    };
-    return feature;
+  var removeArrows = (map2, name) => {
+    map2.removeLayer(`${name}-points-arrows`);
+    map2.removeSource(`${name}-points-arrows`);
   };
-  var plotPoints = (map2, route, timeFormat = "HH:mm.ss") => {
-    TIME_FORMAT = timeFormat;
-    let FEATS = [];
-    let i = 0;
-    for (const COORD of route.coords) {
-      FEATS.push(getFeature(COORD, route.times[i++]));
-    }
-    map2.addSource(`${route.name}-points`, {
-      type: "geojson",
-      data: {
-        type: "FeatureCollection",
-        features: FEATS
-      }
-    });
-    map2.addLayer({
-      id: "points",
-      type: "circle",
-      source: `${route.name}-points`,
-      paint: {
-        "circle-radius": 3,
-        "circle-color": "#fff"
-      },
-      minzoom: 16,
-      filter: ["==", "$type", "Point"]
-    });
-    map2.addLayer({
-      id: "points-text",
-      type: "symbol",
-      source: `${route.name}-points`,
-      layout: {
-        "text-field": ["get", "time"],
-        "text-font": [
-          "Open Sans Semibold",
-          "Arial Unicode MS Bold"
-        ],
-        "text-padding": 50,
-        "text-size": 10,
-        "text-offset": [1, 0],
-        "text-anchor": "left"
-      }
-    });
-  };
-
-  // modules/arrows/index.js
-  var import_dayjs2 = __toModule(require_dayjs_min());
-  var TIME_FORMAT2;
-  var getFeature2 = (lngLat, lngLat2, time) => {
+  var getFeature = (lngLat, lngLat2, time) => {
     const angleDeg = Math.atan2(lngLat2[0] - lngLat[0], lngLat2[1] - lngLat[1]) * 180 / Math.PI;
     const feature = {
       type: "Feature",
@@ -3437,7 +3373,7 @@
       type: "Feature",
       geometry: {type: "Point", coordinates: lngLat},
       properties: {
-        text: (0, import_dayjs2.default)(time).format(TIME_FORMAT2),
+        text: (0, import_dayjs.default)(time).format(TIME_FORMAT),
         size: 11,
         rotation: 0
       }
@@ -3445,11 +3381,10 @@
     return feature;
   };
   var plotArrows = (map2, route, timeFormat = "HH:mm.ss") => {
-    TIME_FORMAT2 = timeFormat;
+    TIME_FORMAT = timeFormat;
     let FEATS = [];
     let i = 0;
     let tmpCoord = [0, 0];
-    console.log(route.coords);
     for (const COORD of route.coords) {
       const NOT_SAME_POINT = !(tmpCoord[0] === COORD[0] && tmpCoord[1] === COORD[1]);
       if (tmpCoord && NOT_SAME_POINT) {
@@ -3458,7 +3393,7 @@
           FEATS.push(getFeatureTime(COORD, route.times[i]));
         } else {
           if (i % 4 == 0) {
-            FEATS.push(getFeature2(COORD, tmpCoord, route.times[i]));
+            FEATS.push(getFeature(COORD, tmpCoord, route.times[i]));
           }
         }
       }
@@ -3472,7 +3407,7 @@
       }
     });
     map2.addLayer({
-      id: "points-arrows",
+      id: `${route.name}-points-arrows`,
       type: "symbol",
       source: `${route.name}-points-arrows`,
       layout: {
@@ -3500,6 +3435,14 @@
   // index.js
   mapboxgl.accessToken = "pk.eyJ1Ijoiem91dGVwb3Bjb3JuIiwiYSI6ImNqaDRxem9sNDE1Zmwyd2xuZG1iYTl0OXcifQ.r4qZMpEbr2FoCN4sd97kDw";
   var CENTER = [13.88, 46.37];
+  var BIKE_COLOR = [
+    {color: "purple", pos: 0},
+    {color: "blue", pos: 10},
+    {color: "green", pos: 15},
+    {color: "yellow", pos: 25},
+    {color: "orange", pos: 30},
+    {color: "red", pos: 70}
+  ];
   var map = window.map = new mapboxgl.Map({
     container: "map",
     center: CENTER,
@@ -3508,28 +3451,16 @@
   });
   var handleFiles = async (files) => {
     console.log("files ", files);
+    removeArrows(map, "my-route");
+    removeRoute(map, "my-route");
     const file = document.getElementById("addGpx").files[0];
     if (file) {
       const reader = new FileReader();
       reader.readAsText(file, "UTF-8");
       reader.onload = function(evt) {
         console.log(evt.target.result);
-        const hike = convertFromInput(evt.target.result);
-        console.log("hike ", hike);
-        setGradient([
-          {color: "purple", pos: 0},
-          {color: "blue", pos: 0.2},
-          {color: "green", pos: 0.25},
-          {color: "yellow", pos: 0.3},
-          {color: "orange", pos: 0.4},
-          {color: "red", pos: 1}
-        ]);
-        setMaxSpeed(70);
-        const output = colorRoute(hike);
-        addToMap(map, output);
-        plotPoints(map, hike);
-        zoomTo(output.geojson);
-        console.log(hike);
+        const route = convertFromInput(evt.target.result);
+        plotRoute(route);
       };
       reader.onerror = function(evt) {
         document.getElementById("fileContents").innerHTML = "error reading file";
@@ -3539,25 +3470,16 @@
   };
   var inputElement = document.getElementById("addGpx");
   inputElement.addEventListener("change", handleFiles, false);
-  var plotRoute = async () => {
-    const hike = await convertGpx("routes/hike.gpx");
-    setGradientFromSpeed([
-      {color: "purple", pos: 0},
-      {color: "blue", pos: 10},
-      {color: "green", pos: 15},
-      {color: "yellow", pos: 25},
-      {color: "orange", pos: 30},
-      {color: "red", pos: 70}
-    ]);
+  var plotRoute = async (route) => {
+    setGradientFromSpeed(BIKE_COLOR);
     setMaxSpeed(70);
-    hike.name = "my-route";
-    const output = colorRoute(hike);
+    route.name = "my-route";
+    const output = colorRoute(route);
     addToMap(map, output);
-    plotArrows(map, hike);
+    plotArrows(map, route);
     zoomTo(output.geojson);
   };
   var zoomTo = (geojson) => {
-    console.log(geojson);
     const coordinates = geojson.features[0].geometry.coordinates;
     const bounds = coordinates.reduce((bounds2, coord) => {
       return bounds2.extend(coord);
@@ -3585,7 +3507,8 @@
     }
   };
   map.on("load", async () => {
-    await plotRoute();
+    const hike = await convertGpx("routes/hike.gpx");
+    await plotRoute(hike);
   });
   makeColorGuide();
 })();
