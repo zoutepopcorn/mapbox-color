@@ -1,5 +1,5 @@
 {
-  "name": "@mapbox-color/route",
+  "name": "mapbox-color",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,16 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/zoutepopcorn/mapbox-color.git"
   },
-  "keywords": [
-    "mapbox",
-    "color",
-    "route",
-    "gpx"
-  ],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/zoutepopcorn/mapbox-color/issues"
-  },
-  "homepage": "https://github.com/zoutepopcorn/mapbox-color#readme"
+  "dependencies": {
+    "dayjs": "^1.10.4"
+  }
 }
