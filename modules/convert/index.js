@@ -30,7 +30,6 @@ const getTimeDiff = (times) => {
     }
     return TIMES_DIFF;
 }
-
 const getSpeeds = (route, times) => {
     const DISTANCES = getDistances(route);
     const TIME_DIFF = getTimeDiff(times);
@@ -44,7 +43,6 @@ const getSpeeds = (route, times) => {
 
     return SPEEDS;
 }
-
 const convertFromInput = (TEXT) => {
     // const RES = await fetch(FILENAME);
     const GPX_TXT = gpx(new DOMParser().parseFromString(TEXT, "text/xml"))
@@ -58,8 +56,6 @@ const convertFromInput = (TEXT) => {
     console.log(ROUTE);
     return ROUTE;
 }
-
-
 const convertGpx = async (FILENAME) => {
     const RES = await fetch(FILENAME);
     const GPX_TXT = gpx(new DOMParser().parseFromString(await RES.text(), "text/xml"))
@@ -74,8 +70,6 @@ const convertGpx = async (FILENAME) => {
     for (const SPEED of ROUTE.speeds) {
         ROUTE.rotation.push(Math.floor(360 * Math.random()));
     }
-    console.log("ROUTE ", ROUTE);
-
     return ROUTE;
 }
 

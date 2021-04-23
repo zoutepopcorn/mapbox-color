@@ -3,6 +3,10 @@ import dayjs from 'dayjs'
 
 let TIME_FORMAT;
 
+const removeArrows = (map, name) => {
+    map.removeLayer(`${name}-points-arrows`);
+    map.removeSource(`${name}-points-arrows`);
+}
 const getFeature = (lngLat, lngLat2, time) => {
     // const bearing = turf.bearing(turf.point(lngLat), turf.point(lngLat2));
     const angleDeg = Math.atan2(lngLat2[0] - lngLat[0], lngLat2[1] - lngLat[1]) * 180 / Math.PI;
@@ -38,15 +42,14 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
     let FEATS = [];
     let i = 0;
     let tmpCoord = [0, 0];
-    console.log(route.coords);
     for (const COORD of route.coords) {
         const NOT_SAME_POINT = !(tmpCoord[0] === COORD[0] && tmpCoord[1] === COORD[1]);
         if (tmpCoord && NOT_SAME_POINT) {
             i++;
-            if( i % 20 === 0) {
+            if (i % 20 === 0) {
                 FEATS.push(getFeatureTime(COORD, route.times[i]));
             } else {
-                if( i % 4 == 0) {
+                if (i % 4 == 0) {
                     FEATS.push(getFeature(COORD, tmpCoord, route.times[i]));
                 }
             }
@@ -63,11 +66,11 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
     });
 
     map.addLayer({
-        'id': 'points-arrows',
+        'id': `${route.name}-points-arrows`,
         'type': 'symbol',
         'source': `${route.name}-points-arrows`,
         'layout': {
-            'text-field': ['get','text'],
+            'text-field': ['get', 'text'],
             'text-font': [
                 'Open Sans Semibold',
                 'Arial Unicode MS Bold'
@@ -86,29 +89,6 @@ const plotArrows = (map, route, timeFormat = "HH:mm.ss") => {
             "text-halo-width": 2
         }
     });
-    // map.addLayer({
-    //     'id': 'points-time',
-    //     'type': 'symbol',
-    //     'source': `${route.name}-points-arrows`,
-    //     'layout': {
-    //         'text-field': ['get', 'time'],
-    //         'text-font': [
-    //             'Open Sans Semibold',
-    //             'Arial Unicode MS Bold'
-    //         ],
-    //         "text-padding": 10,
-    //         "text-size": 17,
-    //         'text-offset': [0, 0],
-    //         'text-anchor': 'left',
-    //         'text-keep-upright': false,
-    //         'icon-allow-overlap': true
-    //     },
-    //     'paint': {
-    //         "text-color": "#fff",
-    //         "text-halo-color": "#000",
-    //         "text-halo-width": 2
-    //     }
-    // });
 }
 
-export {plotArrows}
+export {plotArrows, removeArrows}
