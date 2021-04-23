@@ -3547,7 +3547,7 @@
       {color: "green", pos: 15},
       {color: "yellow", pos: 25},
       {color: "orange", pos: 30},
-      {color: "red", pos: 80}
+      {color: "red", pos: 70}
     ]);
     setMaxSpeed(70);
     hike.name = "my-route";
